@@ -5,6 +5,7 @@ from a scrambled string)
 """
 
 import flask
+from flask import request
 import logging
 
 # Our modules
@@ -90,7 +91,10 @@ def check():
     already found.
     """
     app.logger.debug("Entering check")
+    text = request.args.get()
 
+    #we're just going to go ahead and silence everything in here for right now
+    """
     # The data we need, from form and from cookie
     text = flask.request.form["attempt"]
     jumble = flask.session["jumble"]
@@ -121,6 +125,7 @@ def check():
        return flask.redirect(flask.url_for("success"))
     else:
        return flask.redirect(flask.url_for("keep_going"))
+    """
 
 
 ###############
