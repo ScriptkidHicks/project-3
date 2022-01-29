@@ -81,16 +81,16 @@
             </div>
          </div>
          <br />
-         {% if session.matches|length is not equalto 0  %}
          <h2>You found </h2>
-         <div id="results">Test</div>
+         <p id="results">
+         </p>
          <p id="message"></p>
       </div>
-      <!-- container -->
    </body>
 
    <script>
-      let word = "";
+      // this is so that I can only clear the message at certain times
+      let successRecent = 0;
       $("#entry").submit( function(event) {
          event.preventDefault();
          });
@@ -98,7 +98,34 @@
       $("#attempt").keyup( function(even) {
          let scrum = document.getElementById("attempt").value;
          console.log(scrum);
-         $("#results").html("<p>"+ scrum +"</p>");
+         $.getJSON("/_check", {text: scrum},
+            function(data) {
+               outcome = data.case.case;
+               if (outcome === 1){
+                  $("#results").append("<p>" + scrum + "</p>");
+                  count = data.count.count;
+                  document.getElementById("attempt").value = "";
+                  $("#message").html("<h3>Good work! You found " + scrum + "</h3>");
+                  successRecent = 1;
+                  if (count >= 3){
+                     // I don't love how I handled this because it's fine I guess?
+                     window.open("/success");
+                  }
+               } else if (outcome === 2){
+                  $("#message").html("<h3>You already found " + scrum + "</h3>");
+                  successRecent = 0;
+               } else if (outcome == 3){
+                  if ((scrum === "" && successRecent === 0) || (scrum !== "")){
+                     $("#message").html("<h3>" + scrum + " isn't in the list of words</h3>");
+                  }
+               } else if (outcome == 4) {
+                  $("#message").html("<h3>" + scrum + " can't be made from the letters " + data.jmb.jumble +"</h3>");
+                  successRecent = 0;
+               } else {
+                  console.debug("This case should never occur");
+               }
+            }
+         )
       })
    </script>
 </html>
