@@ -109,7 +109,7 @@
                   successRecent = 1;
                   if (count >= 3){
                      // I don't love how I handled this because it's fine I guess?
-                     window.open("/success");
+                     window.location.replace("/success");
                   }
                } else if (outcome === 2){
                   $("#message").html("<h3>You already found " + scrum + "</h3>");

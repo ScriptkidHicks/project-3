@@ -1,5 +1,6 @@
 FROM python:3.8
-LABEL maintainer=Tammas Hicks "tammas@webmail.uoregon.edu"
+LABEL maintainer="tammas@webmail.uoregon.edu"
+MAINTAINER Tammas Hicks
 RUN apt-get update -y
 COPY . /app
 WORKDIR /app
